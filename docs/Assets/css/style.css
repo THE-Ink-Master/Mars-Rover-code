@@ -1,0 +1,154 @@
+body {
+  background-color: black;
+  /* box-sizing: border-box; */
+  color: white;
+  font-size: clamp(1.5vh, 3vh, 35px);
+  height: 100%;
+  width: 99%;
+}
+
+.dropbtn {
+  background-color: inherit;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-size: clamp(20%, 3vh, 24px);  
+  padding: 2vh 10px;
+}
+
+.dropdown-content {
+  background-color: #24242477;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  color: inherit;
+  display: none;
+  min-width: 160px;
+  position: absolute;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: inherit;
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #666;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+.dropdown {
+  display: block;
+  position: relative;
+}
+
+.image {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.imgbox {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px;
+}
+
+.left {
+  float: left;
+  width: 20%;
+}
+
+.navbar {
+  align-items: flex-start;
+  background-color: #24242477;
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
+  font-weight: bold;
+  height: 8vh;
+  padding: 0.5vw;
+  position: static;
+  width: 100%;
+}
+
+.navbar .verticalLine {
+  align-self: stretch;
+  border-left: 3px solid rgb(50, 50, 50);
+}
+
+.navbar .verticalLine-dark {
+  align-self: stretch;
+  border-left: 3px solid rgb(50, 50, 50);
+  margin-left: auto;
+  text-align: right;
+}
+
+.navbar a {
+  /*color: white;*/
+  font-size: clamp(1vh, 2.5vh, 75%);
+  padding: 16px 10px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+.navbar .home {
+  color: white;
+  font-size: clamp(1vh, 3vh, 24px);
+  padding: 11px 15px;
+  text-decoration: none;
+}
+
+.navButton {
+  display: none;
+}
+
+.text {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: clamp(1vh, 3vh, 24px);
+}
+
+.bigtext {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: clamp(1.5vh, 4vh, 35px);
+
+}
+
+.table {
+  max-height: 80%;
+  max-width: 80%;
+}
+
+.tablediv {
+  overflow-x: auto;
+}
+
+@media (min-width: 1300px) {
+  .dropdown {
+    display: none;
+  }
+
+  .navButton {
+    display: block;
+  }
+}
