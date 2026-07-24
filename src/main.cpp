@@ -45,6 +45,12 @@ ServoEasing servoW4;
 ServoEasing servoW6;
 ServoEasing servoCamTilt;
 
+ServoEasing servoArmBaseSide;
+ServoEasing servoArmBaseHeight;
+ServoEasing servoArmMidHeight;
+ServoEasing servoArmClawHeight;
+ServoEasing servoArmClaw;
+
 AccelStepper camPanStepper(1, 46, 45);  //(Type:driver, STEP, DIR) - Stepper1
 
 IBusBM IBus;
@@ -64,6 +70,15 @@ int camPan = 0;
 float speed1, speed2, speed3 = 0;
 float speed1PWM, speed2PWM, speed3PWM = 0;
 float thetaInnerFront, thetaInnerBack, thetaOuterFront, thetaOuterBack = 0;
+
+float armForwardBackward = 0;
+float armUpDown = 0;
+
+int servoArmSideAngle = 90;
+int servoArmBaseAngle = 90;
+int servoArmMidAngle = 90;
+int servoArmClawAngle = 90;
+int servoClawAngle = 90;
 
 
 float d1 = 271; // distance in mm
@@ -103,6 +118,40 @@ void calculateServoAngle() {
 
 }
 
+void arm() {
+  //code for the arm/claw extension goes here
+  servoArmBaseAngle = map(ch6, 1000, 2000, 0, 180);
+  armForwardBackward = map(ch7, 1000, 2000, 0, 180);
+
+  if(ch5 > 1500) {
+    servoClawAngle = 0;
+  } else if(ch5 < 1500) {
+    servoClawAngle = 180;
+  }
+
+  if(ch8 > 1600) {
+    armUpDown = 180;
+  } else if(ch8 < 1400) {
+    armUpDown = 0;
+  } else if(ch8 == 1500) {
+    armUpDown = 90;
+  }
+  
+  servoArmBaseSide.startEaseTo(servoArmBaseAngle);
+  servoArmBaseHeight.startEaseTo(servoArmBaseAngle);
+  servoArmMidHeight.startEaseTo(servoArmMidAngle);
+  servoArmClawHeight.startEaseTo(servoArmClawAngle);
+  servoArmClaw.startEaseTo(servoClawAngle);
+}
+
+void serialSend() {
+  if (Serial3.available() > 0) {
+    int copy = Serial3.read();
+    Serial.println("ESP-DATA:");
+    Serial.println(copy);
+  }
+}
+
 void setup() {
   /*
      Use this if you need to change the frequency of the PWM signals
@@ -113,7 +162,11 @@ void setup() {
     TCCR3B = TCCR3B & B11111000 | B00000101;    // D2, D3, D5 PWM frequency of 30.64 Hz
   */
   
+  
+  //We can connect the pi to the mega through usb and make them communicate over serial( USB)
   Serial.begin(115200);
+  //And TX3 and RX3 can be connected to the ESP32 to make all devices send their data to the pi (or mega) 
+  Serial3.begin(115200);
   IBus.begin(Serial1, IBUSBM_NOTIMER); // Servo iBUS
   IBusSensor.begin(Serial2, IBUSBM_NOTIMER); // Sensor iBUS
 
@@ -124,6 +177,12 @@ void setup() {
   servoW4.attach(24);
   servoW6.attach(25);
   servoCamTilt.attach(26);
+  
+  servoArmBaseSide.attach(27);
+  servoArmBaseHeight.attach(28);
+  servoArmMidHeight.attach(29);
+  servoArmClawHeight.attach(30);
+  servoArmClaw.attach(30);
 
   servoW1.write(90);
   servoW3.write(90);
@@ -131,11 +190,23 @@ void setup() {
   servoW6.write(90);
   servoCamTilt.write(90);
 
+  servoArmBaseSide.write(90);
+  servoArmBaseHeight.write(90);
+  servoArmMidHeight.write(90);
+  servoArmClawHeight.write(90);
+  servoArmClaw.write(90);
+
   servoW1.setSpeed(550);
   servoW3.setSpeed(550);
   servoW4.setSpeed(550);
   servoW6.setSpeed(550);
   servoCamTilt.setSpeed(200);
+
+  servoArmBaseSide.setSpeed(200);
+  servoArmBaseHeight.setSpeed(200);
+  servoArmMidHeight.setSpeed(200);
+  servoArmClawHeight.setSpeed(200);
+  servoArmClaw.setSpeed(200);
 
   camPanStepper.setMaxSpeed(1000);
   camPan = 0;
@@ -383,6 +454,22 @@ void loop() {
             digitalWrite(motorW6_IN2, LOW);
     }
   }
+
+
+  Serial.println("Channel 5: ");
+  Serial.println(ch5);
+  Serial.println("Channel 6: ");
+  Serial.println(ch6);
+  Serial.println("Channel 7: ");
+  Serial.println(ch7);
+  Serial.println("Channel 8: ");
+  Serial.println(ch8);
+  Serial.println("Channel 9: ");
+  Serial.println(ch9);
+  // arm();
+
+  serialSend();
+
   // Monitor the battery voltage
   int sensorValue = analogRead(A0);
   float voltage = sensorValue * (5.00 / 1023.00) * 3.02; // Convert the reading values from 5v to suitable 12V
