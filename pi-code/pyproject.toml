@@ -1,0 +1,28 @@
+[build-system]
+requires = ["uv_build >= 0.11.7, <0.12.0"]
+build-backend = "uv_build"
+
+[project]
+name = "pi-code"
+version = "0.1.0"
+description = "The code that runs on the pi to allow for serial communication"
+dependencies = [
+  "pyttsx3",
+  "pygame-ce",
+  "pyserial",
+]
+authors = [
+  { name="Ink Master" },
+]
+readme = "README.md"
+requires-python = ">=3.14, <3.15"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "LGPL-3.0-or-later"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/THE-Ink-Master/mars-rover"
+Issues = "https://github.com/THE-Ink-Master/mars-rover/issues"
